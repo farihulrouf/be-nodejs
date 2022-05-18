@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const app = express();
 const mongoose = require("mongoose")
 const dotenv = require("dotenv")
-
+const User = require('./models/user')
 dotenv.config()
 mongoose.connect(process.env.URI,
 	err => {
@@ -19,19 +19,20 @@ mongoose.connect(process.env.URI,
 )
 
 
+
+
 app.use(morgan("dev"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.get("/", (req, res) => {
-	res.json("hello amazon clone")
-})
 
-app.post("/", (req, res) => {
-	console.log(req.body.name)
-})
+const productRouters = require("./routes/product")
+const userRouters = require("./routes/user")
+app.use("/api", productRouters)
+app.use("/api", userRouters)
 
-app.listen(3005, err => {
+
+app.listen(3002, err => {
 	if (err) {
 		console.log(err)
 	}
