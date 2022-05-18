@@ -4,8 +4,10 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const app = express();
 const mongoose = require("mongoose")
+const dotenv = require("dotenv")
 
-mongoose.connect("mongodb+srv://farihul_clearisk:peruvianAB12@cluster0.5e0y3.mongodb.net/clearisk_io?retryWrites=true&w=majority",
+dotenv.config()
+mongoose.connect(process.env.URI,
 	err => {
 		if(err) {
 			console.log(err);
