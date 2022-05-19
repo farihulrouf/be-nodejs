@@ -63,4 +63,36 @@ router.get("/products/:id", async (req, res) => {
 });
 
 
+// PUT request - Modifier un produit
+router.put("/products/:id", upload.single("photo"), async (req, res) => {
+  try {
+    let product = await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          title: req.body.title,
+          price: req.body.price,
+          category: req.body.categoryID,
+          description: req.body.description,
+          photo: req.file.location,
+          stockQuantity: req.body.stockQuantity,
+          owner: req.body.ownerID
+        }
+      },
+      { upsert: true }
+    );
+
+    res.json({
+      success: true,
+      updatedProduct: product
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
+
 module.exports = router;
