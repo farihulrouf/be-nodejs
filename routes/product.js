@@ -28,4 +28,39 @@ router.post("/products", upload.single("photo"), async (req, res) => {
 });
 
 
+//Get All product
+router.get("/products", async (req, res) => {
+  try {
+    let products = await Product.find()
+    res.json({
+      success: true,
+      products: products
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
+
+// GET request - GET single Product
+router.get("/products/:id", async (req, res) => {
+  try {
+    let product = await Product.findOne({ _id: req.params.id })
+      
+    res.json({
+      success: true,
+      product: product
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
+
+
 module.exports = router;
