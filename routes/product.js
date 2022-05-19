@@ -1,16 +1,17 @@
-
-   
 const router = require("express").Router();
 const Product = require("../models/product");
-router.post("/products", async (req, res) => {
+const upload = require("../middlewares/upload-photo");
+
+// POST request - Create a new Product
+router.post("/products", upload.single("photo"), async (req, res) => {
   try {
     let product = new Product();
     //product.owner = req.body.ownerID;
     //product.category = req.body.categoryID;
     product.title = req.body.title;
     product.description = req.body.description;
-    product.photo = req.photo;
-    //product.price = req.body.price;
+    product.photo = req.file.location;
+    product.price = req.body.price;
     product.stockQuantity = req.body.stockQuantity;
 
     await product.save();
@@ -25,7 +26,6 @@ router.post("/products", async (req, res) => {
     });
   }
 });
-
 
 
 module.exports = router;
